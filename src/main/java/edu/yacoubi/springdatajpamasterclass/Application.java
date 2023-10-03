@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 public class Application {
@@ -37,37 +38,14 @@ public class Application {
 			System.out.println("Adding maria & ahmed");
 			studentRepository.saveAll(List.of(maria,ahmed));
 
-			System.out.print("count number of students : ");
-			System.out.println(studentRepository.count());
-
-			System.out.print("Find student with ID 2 : ");
 			studentRepository
-					.findById(2L)
+					.findStudentByEmail("ahmed.ali@yacoubi.edu")
 					.ifPresentOrElse(
 							System.out::println,
-							() -> System.out.println("Student with ID 2 not found")
+							() -> System.out.println("Student with email ahmed.ali@yacoubi.edu not found")
 					);
 
-			System.out.println();
 
-			System.out.print("Find student with ID 3 : ");
-			studentRepository
-					.findById(3L)
-					.ifPresentOrElse(
-							System.out::println,
-							() -> System.out.println("Student with ID 2 not found")
-					);
-
-			System.out.println();
-
-			System.out.println("Find all students :");
-			List<Student> students = studentRepository.findAll();
-			students.forEach(System.out::println);
-
-			System.out.println("Delete student with ID 1: ");
-			studentRepository.deleteById(1L);
-			System.out.print("count number of students : ");
-			System.out.println( studentRepository.count() );
 		};
 	}
 
