@@ -4,15 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+import static javax.persistence.GenerationType.SEQUENCE;
+
+@Entity(name = "Student")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Student {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(
+            name = "student_sequence",
+            sequenceName = "student_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = SEQUENCE,
+            generator = "student_sequence"
+    )
     private Long id;
     private String firstName;
     private String lastName;
