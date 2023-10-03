@@ -9,6 +9,15 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Student")
+@Table(
+        name = "student",
+        uniqueConstraints = {
+              @UniqueConstraint(
+                      name = "student_email_unique",
+                      columnNames = "email"
+              )
+        }
+)
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Student {
     @Id
@@ -21,9 +30,37 @@ public class Student {
             strategy = SEQUENCE,
             generator = "student_sequence"
     )
+    @Column(
+            name = "id",
+            updatable = false
+    )
     private Long id;
+
+    @Column(
+            name = "first_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String firstName;
+
+    @Column(
+            name = "last_name",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String lastName;
+
+    @Column(
+            name = "email",
+            nullable = false,
+            //unique = true, to overwrite the generated unique name. s. Table def.
+            columnDefinition = "TEXT"
+    )
     private String email;
+
+    @Column(
+            name = "age",
+            nullable = false
+    )
     private Integer age;
 }
