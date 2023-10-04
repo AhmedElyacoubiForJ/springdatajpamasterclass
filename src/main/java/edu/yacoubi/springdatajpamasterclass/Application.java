@@ -72,8 +72,17 @@ public class Application {
 					"Maria", 21
 			).forEach(System.out::println);
 
+			System.out.println();
+
 			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNative(Maria, 21)");
 			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNative(
+					"Maria", 21
+			).forEach(System.out::println);
+
+			System.out.println();
+
+			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNamedParameters(Maria, 21)");
+			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNamedParameters(
 					"Maria", 21
 			).forEach(System.out::println);
 

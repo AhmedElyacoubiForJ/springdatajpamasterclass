@@ -3,6 +3,7 @@ package edu.yacoubi.springdatajpamasterclass.repository;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +47,11 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNative(
             String firstName,
             Integer age
+    );
+
+    @Query("SELECT s FROM Student s WHERE s.firstName = :firstName AND s.age >= :age")
+    List<Student> findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNamedParameters(
+            @Param("firstName") String firstName,
+            @Param("age") Integer age
     );
 }
