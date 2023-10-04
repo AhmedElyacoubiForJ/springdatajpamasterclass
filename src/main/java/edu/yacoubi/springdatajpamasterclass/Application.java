@@ -1,5 +1,7 @@
 package edu.yacoubi.springdatajpamasterclass;
 
+import com.github.javafaker.Faker;
+import com.github.javafaker.Name;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -21,75 +23,19 @@ public class Application {
 	@Bean
 	CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
 		return args -> {
-
-			Student maria = new Student(
-					"Maria",
-					"Jones",
-					"maria.jones@yacoubi.edu",
-					25
-			);
-
-			Student maria2 = new Student(
-					"Maria",
-					"Jones",
-					"maria2.jones@yacoubi.edu",
-					21
-			);
-
-			Student ahmed = new Student(
-					"Ahmed",
-					"Ali",
-					"ahmed.ali@yacoubi.edu",
-					22
-			);
-			System.out.println("Adding maria & ahmed");
-			studentRepository.saveAll(List.of(maria,ahmed, maria2));
-
-			studentRepository
-					.findStudentByEmail("ahmed.ali@yacoubi.edu")
-					.ifPresentOrElse(
-							System.out::println,
-							() -> System.out.println("Student with email ahmed.ali@yacoubi.edu not found")
-					);
-
-			System.out.println("findStudentsByFirstNameEqualsAndAgeEquals: Maria, 25");
-			studentRepository.findStudentsByFirstNameEqualsAndAgeEquals(
-					"Maria",
-					25
-			).forEach(System.out::println);
-
-			System.out.println();
-
-			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThan: Maria, 21");
-			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan(
-					"Maria", 21
-			).forEach(System.out::println);
-
-			System.out.println();
-
-			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqual: Maria, 21");
-			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqual(
-					"Maria", 21
-			).forEach(System.out::println);
-
-			System.out.println();
-
-			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNative(Maria, 21)");
-			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNative(
-					"Maria", 21
-			).forEach(System.out::println);
-
-			System.out.println();
-
-			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNamedParameters(Maria, 21)");
-			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqualNamedParameters(
-					"Maria", 21
-			).forEach(System.out::println);
-
-			System.out.println();
-
-			System.out.println("deleteStudentById(3L))");
-			System.out.println("Number of affected rows : " + studentRepository.deleteStudentById(3L));
+			Faker faker = new Faker();
+			for (int i = 0; i<20;i++){
+				String firstName = faker.name().firstName();
+				String lastName = faker.name().lastName();
+				String email = String.format("%s.%s@yacoubi.edu", firstName, lastName);
+				Student student = new Student(
+						firstName,
+						lastName,
+						email,
+						faker.number().numberBetween(17, 55)
+				);
+				studentRepository.save(student);
+			}
 		};
 	}
 
