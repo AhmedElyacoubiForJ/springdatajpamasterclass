@@ -2,9 +2,11 @@ package edu.yacoubi.springdatajpamasterclass.repository;
 
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,4 +56,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
             @Param("firstName") String firstName,
             @Param("age") Integer age
     );
+
+    @Transactional // is required otherwise exception will be thrown
+    @Modifying // to tell the framework don't map any think by retrieving data
+    @Query("DELETE FROM Student s WHERE s.id = ?1")
+    int deleteStudentById(Long id);
 }

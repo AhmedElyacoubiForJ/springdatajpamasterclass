@@ -86,6 +86,10 @@ public class Application {
 					"Maria", 21
 			).forEach(System.out::println);
 
+			System.out.println();
+
+			System.out.println("deleteStudentById(3L))");
+			System.out.println("Number of affected rows : " + studentRepository.deleteStudentById(3L));
 		};
 	}
 
