@@ -29,6 +29,13 @@ public class Application {
 					25
 			);
 
+			Student maria2 = new Student(
+					"Maria",
+					"Jones",
+					"maria2.jones@yacoubi.edu",
+					21
+			);
+
 			Student ahmed = new Student(
 					"Ahmed",
 					"Ali",
@@ -36,7 +43,7 @@ public class Application {
 					22
 			);
 			System.out.println("Adding maria & ahmed");
-			studentRepository.saveAll(List.of(maria,ahmed));
+			studentRepository.saveAll(List.of(maria,ahmed, maria2));
 
 			studentRepository
 					.findStudentByEmail("ahmed.ali@yacoubi.edu")
@@ -45,6 +52,25 @@ public class Application {
 							() -> System.out.println("Student with email ahmed.ali@yacoubi.edu not found")
 					);
 
+			System.out.println("findStudentsByFirstNameEqualsAndAgeEquals: Maria, 25");
+			studentRepository.findStudentsByFirstNameEqualsAndAgeEquals(
+					"Maria",
+					25
+			).forEach(System.out::println);
+
+			System.out.println();
+
+			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThan: Maria, 21");
+			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThan(
+					"Maria", 21
+			).forEach(System.out::println);
+
+			System.out.println();
+
+			System.out.println("findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqual: Maria, 21");
+			studentRepository.findStudentsByFirstNameEqualsAndAgeIsGreaterThanEqual(
+					"Maria", 21
+			).forEach(System.out::println);
 
 		};
 	}
