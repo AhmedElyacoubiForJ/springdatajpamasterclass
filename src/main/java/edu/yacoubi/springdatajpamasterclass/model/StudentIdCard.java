@@ -53,4 +53,9 @@ public class StudentIdCard {
     public StudentIdCard(String cardNumber) {
         this.cardNumber = cardNumber;
     }
+
+    public StudentIdCard(String cardNumber, Student student) {
+        this.cardNumber = cardNumber;
+        this.student = student;
+    }
 }

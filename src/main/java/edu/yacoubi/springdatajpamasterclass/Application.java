@@ -3,6 +3,8 @@ package edu.yacoubi.springdatajpamasterclass;
 import com.fasterxml.jackson.core.JsonToken;
 import com.github.javafaker.Faker;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
+import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
+import edu.yacoubi.springdatajpamasterclass.repository.StudentIdCardRepository;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -24,28 +26,40 @@ public class Application {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
-		return args -> {
+	CommandLineRunner commandLineRunner(
+			StudentRepository studentRepository,
+			StudentIdCardRepository studentIdCardRepository) {
 
+		return args -> {
+			Faker faker = new Faker();
+			Student student = generateStudent(faker);;
+			StudentIdCard studentIdCard = new StudentIdCard(
+					"123456789",
+					student
+			);
+			studentIdCardRepository.save(studentIdCard);
 		};
+	}
+
+	private static Student generateStudent(Faker faker) {
+		String firstName = faker.name().firstName();
+		String lastName = faker.name().lastName();
+		String email = String.format("%s.%s@yacoubi.edu", firstName, lastName);
+		int age = faker.number().numberBetween(17, 55);
+
+		Student student = new Student(
+				firstName,
+				lastName,
+				email,
+				age
+		);
+		return student;
 	}
 
 	private static void generateRandomStudents(StudentRepository studentRepository) {
 		Faker faker = new Faker();
 		for (int i = 0; i<20;i++){
-			String firstName = faker.name().firstName();
-			String lastName = faker.name().lastName();
-			String email = String.format("%s.%s@yacoubi.edu", firstName, lastName);
-            int age = faker.number().numberBetween(17, 55);
-
-            Student student = new Student(
-					firstName,
-					lastName,
-					email,
-                    age
-			);
-			studentRepository.save(student);
+			studentRepository.save(generateStudent(faker));
 		}
 	}
-
 }
