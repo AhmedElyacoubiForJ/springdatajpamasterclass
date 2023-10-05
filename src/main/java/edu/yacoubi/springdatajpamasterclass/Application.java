@@ -1,5 +1,6 @@
 package edu.yacoubi.springdatajpamasterclass;
 
+import com.fasterxml.jackson.core.JsonToken;
 import com.github.javafaker.Faker;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentRepository;
@@ -8,6 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @SpringBootApplication
@@ -27,40 +31,59 @@ public class Application {
 			System.out.println();
 
 			// get students by firstName sorted desc
-			Sort sort = Sort.by(
+			Sort byFirstNameAscSort = Sort.by(
 					Sort.Direction.ASC,
 					"firstName"
 			);
 
-			System.out.println("Sorting students by firstname asc");
+			System.out.println("Sorting students by firstname ascending");
 			studentRepository
-					.findAll(sort)
-					.forEach(student -> System.out.println(student.getFirstName()));
+					.findAll(byFirstNameAscSort)
+					.forEach(s -> System.out.println(s.getFirstName()));
 
 			System.out.println();
 
-			sort = Sort
-					.by("firstName")
-					.ascending()
-					.and(Sort.by("age").descending());
-			System.out.println("Sorting students by firstname asc and age des");
+            Sort byAgeDescSort = Sort.by("age").descending();
+            Sort byFirstNameAscAndAgeDescSort = Sort
+                    .by("firstName").ascending()
+					.and(byAgeDescSort);
+
+			System.out.println("Sorting students by firstname ascending and age descending");
 			studentRepository
-					.findAll(sort)
-					.forEach(student -> System.out.println(student.getFirstName() + " "+ student.getAge()));
+					.findAll(byFirstNameAscAndAgeDescSort)
+					.forEach(s -> System.out.println(s.getFirstName() + " "+ s.getAge()));
+
+			System.out.println();
+
+			System.out.println("Pagination and sorting");
+			for (int i=0; i<4; i++) {
+				System.out.println();
+				System.out.println("Page : " + (i + 1));
+				PageRequest pageable = PageRequest.of(
+						i,
+						5,
+						byFirstNameAscSort
+				);
+				Page<Student> studentPage = studentRepository.findAll(pageable);
+				studentPage.forEach(System.out::println);
+			}
+
 		};
 	}
 
 	private static void generateRandomStudents(StudentRepository studentRepository) {
 		Faker faker = new Faker();
 		for (int i = 0; i<20;i++){
-			String firstName = firstName = faker.name().firstName();
+			String firstName = faker.name().firstName();
 			String lastName = faker.name().lastName();
 			String email = String.format("%s.%s@yacoubi.edu", firstName, lastName);
-			Student student = new Student(
+            int age = faker.number().numberBetween(17, 55);
+
+            Student student = new Student(
 					firstName,
 					lastName,
 					email,
-					faker.number().numberBetween(17, 55)
+                    age
 			);
 			studentRepository.save(student);
 		}
