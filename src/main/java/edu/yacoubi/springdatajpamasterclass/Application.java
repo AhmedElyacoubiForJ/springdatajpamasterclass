@@ -26,47 +26,6 @@ public class Application {
 	@Bean
 	CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
 		return args -> {
-			generateRandomStudents(studentRepository);
-
-			System.out.println();
-
-			// get students by firstName sorted desc
-			Sort byFirstNameAscSort = Sort.by(
-					Sort.Direction.ASC,
-					"firstName"
-			);
-
-			System.out.println("Sorting students by firstname ascending");
-			studentRepository
-					.findAll(byFirstNameAscSort)
-					.forEach(s -> System.out.println(s.getFirstName()));
-
-			System.out.println();
-
-            Sort byAgeDescSort = Sort.by("age").descending();
-            Sort byFirstNameAscAndAgeDescSort = Sort
-                    .by("firstName").ascending()
-					.and(byAgeDescSort);
-
-			System.out.println("Sorting students by firstname ascending and age descending");
-			studentRepository
-					.findAll(byFirstNameAscAndAgeDescSort)
-					.forEach(s -> System.out.println(s.getFirstName() + " "+ s.getAge()));
-
-			System.out.println();
-
-			System.out.println("Pagination and sorting");
-			for (int i=0; i<4; i++) {
-				System.out.println();
-				System.out.println("Page : " + (i + 1));
-				PageRequest pageable = PageRequest.of(
-						i,
-						5,
-						byFirstNameAscSort
-				);
-				Page<Student> studentPage = studentRepository.findAll(pageable);
-				studentPage.forEach(System.out::println);
-			}
 
 		};
 	}
