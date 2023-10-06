@@ -74,8 +74,10 @@ public class Student {
     // we have specified 2 ways to get entities s. StudentIdCard also
     @OneToOne(
             mappedBy = "student",
-            orphanRemoval = true // if we delete a student then the student card associated with him
-            // will be also deleted respectively (the owner)
+            orphanRemoval = true
+            // if we want to delete a student,
+            // so the StudentIdCard associated with him must be also deleted.
+            // Cause for the foreign key constraints
     )
     private StudentIdCard studentIdCard;
 
