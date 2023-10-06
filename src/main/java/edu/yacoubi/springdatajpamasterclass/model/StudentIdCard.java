@@ -51,7 +51,10 @@ public class StudentIdCard {
     ) // save student when we save the card
     @JoinColumn(
             name = "student_id", // column name in student_id_card table
-            referencedColumnName = "id" // from Student
+            referencedColumnName = "id", // from Student
+            foreignKey = @ForeignKey(
+                    name = "student_id_fk"
+            )
     )
     private Student student;
 
