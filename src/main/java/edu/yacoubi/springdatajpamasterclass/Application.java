@@ -38,6 +38,10 @@ public class Application {
 					student
 			);
 			studentIdCardRepository.save(studentIdCard);
+
+			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
+
+			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
 		};
 	}
 

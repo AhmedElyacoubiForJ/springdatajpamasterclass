@@ -43,7 +43,10 @@ public class StudentIdCard {
     )
     private String cardNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER // by OneToOne fetching is default
+    ) // save student when we save the card
     @JoinColumn(
             name = "student_id", // column name in student_id_card table
             referencedColumnName = "id" // from Student
