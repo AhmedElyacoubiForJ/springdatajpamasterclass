@@ -47,6 +47,10 @@ public class Application {
 			Optional<Student> optionalStudent = studentRepository.findById(1L);
 			optionalStudent.ifPresent(System.out::println);
 			System.out.println(optionalStudent.get().getStudentIdCard());
+
+			System.out.println();
+
+			studentRepository.deleteById(1L);
 		};
 	}
 

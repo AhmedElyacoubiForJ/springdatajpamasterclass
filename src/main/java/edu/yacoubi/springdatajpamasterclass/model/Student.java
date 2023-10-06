@@ -72,7 +72,11 @@ public class Student {
     // refer to property in StudentIdCard
     // when we load a Student, a StudentIdCard will be loaded
     // we have specified 2 ways to get entities s. StudentIdCard also
-    @OneToOne(mappedBy = "student")
+    @OneToOne(
+            mappedBy = "student",
+            orphanRemoval = true // if we delete a student then the student card associated with him
+            // will be also deleted respectively (the owner)
+    )
     private StudentIdCard studentIdCard;
 
     public Student(String firstName,
