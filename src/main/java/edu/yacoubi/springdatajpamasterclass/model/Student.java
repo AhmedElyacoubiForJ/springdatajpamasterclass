@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "Student") // name to reference to it in JPQL
@@ -80,6 +83,13 @@ public class Student {
             // Cause for the foreign key constraints
     )
     private StudentIdCard studentIdCard;
+
+    @OneToMany(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    private final List<Book> books = new ArrayList<>();
 
     public Student(String firstName,
                        String lastName,
