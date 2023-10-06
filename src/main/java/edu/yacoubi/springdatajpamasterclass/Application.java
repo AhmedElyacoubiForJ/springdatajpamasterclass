@@ -1,6 +1,5 @@
 package edu.yacoubi.springdatajpamasterclass;
 
-import com.fasterxml.jackson.core.JsonToken;
 import com.github.javafaker.Faker;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
@@ -11,10 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
+import java.util.Optional;
 
 @SpringBootApplication
 @Slf4j
@@ -39,9 +36,17 @@ public class Application {
 			);
 			studentIdCardRepository.save(studentIdCard);
 
-			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
+			System.out.println();
 
+			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
 			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
+
+			System.out.println();
+
+			System.out.println("studentRepository.findById(1L).ifPresent(System.out::println)");
+			Optional<Student> optionalStudent = studentRepository.findById(1L);
+			optionalStudent.ifPresent(System.out::println);
+			System.out.println(optionalStudent.get().getStudentIdCard());
 		};
 	}
 

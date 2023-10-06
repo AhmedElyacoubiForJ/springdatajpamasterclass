@@ -1,6 +1,7 @@
 package edu.yacoubi.springdatajpamasterclass.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -17,7 +18,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
                 )
         }
 )
-@Data @NoArgsConstructor
+@Data
+@NoArgsConstructor
 public class StudentIdCard {
 
     @Id
@@ -61,4 +63,6 @@ public class StudentIdCard {
         this.cardNumber = cardNumber;
         this.student = student;
     }
+
+
 }

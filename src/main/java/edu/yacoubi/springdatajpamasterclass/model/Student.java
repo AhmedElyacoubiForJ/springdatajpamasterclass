@@ -1,7 +1,9 @@
 package edu.yacoubi.springdatajpamasterclass.model;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -17,7 +19,9 @@ import static javax.persistence.GenerationType.SEQUENCE;
               )
         }
 )
-@Data @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Student {
     @Id
     @SequenceGenerator(
@@ -63,13 +67,32 @@ public class Student {
     )
     private Integer age;
 
+    // if we want a bidirectional relation
+    // we can specify these
+    // refer to property in StudentIdCard
+    // when we load a Student, a StudentIdCard will be loaded
+    // we have specified 2 ways to get entities s. StudentIdCard also
+    @OneToOne(mappedBy = "student")
+    private StudentIdCard studentIdCard;
+
     public Student(String firstName,
-                   String lastName,
-                   String email,
-                   Integer age) {
+                       String lastName,
+                       String email,
+                       Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", age=" + age +
+                '}';
     }
 }
