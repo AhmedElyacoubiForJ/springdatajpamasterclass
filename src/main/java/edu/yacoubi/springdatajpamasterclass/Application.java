@@ -91,22 +91,16 @@ public class Application {
 
 			// first try to keep session open, but don't working
 			new testService().fetchTest(studentRepository);
+			
+			/*
+			* Caused by: org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: edu.yacoubi.springdatajpamasterclass.model.Student.books, could not initialize proxy - no Session
+	at org.hibernate.collection.internal.AbstractPersistentCollection.throwLazyInitializationException(AbstractPersistentCollection.java:614) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.collection.internal.AbstractPersistentCollection.withTemporarySessionIfNeeded(AbstractPersistentCollection.java:218) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.collection.internal.AbstractPersistentCollection.initialize(AbstractPersistentCollection.java:591) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.collection.internal.AbstractPersistentCollection.read(AbstractPersistentCollection.java:149) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+	at org.hibernate.collection.internal.PersistentBag.iterator(PersistentBag.java:387) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
+			* */
 
-//			System.out.println();
-//
-//			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
-//			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
-//
-//			System.out.println();
-//
-//			System.out.println("studentRepository.findById(1L).ifPresent(System.out::println)");
-//			Optional<Student> optionalStudent = studentRepository.findById(1L);
-//			optionalStudent.ifPresent(System.out::println);
-//			System.out.println(optionalStudent.get().getStudentIdCard());
-//
-//			System.out.println();
-//
-//			studentRepository.deleteById(1L);
 		};
 	}
 
@@ -133,9 +127,8 @@ public class Application {
 	}
 
 	@Service
-	@Transactional
 	class testService {
-		@Scope("session")
+		@Transactional
 		public void fetchTest(StudentRepository studentRepository) {
 			studentRepository
 					.findById(1L)
