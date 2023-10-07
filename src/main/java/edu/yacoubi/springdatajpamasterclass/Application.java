@@ -11,8 +11,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -38,30 +42,55 @@ public class Application {
 					student
 			);
 
-			Book book = new Book(
-					"Spring Data JPA",
-					LocalDateTime.now().minusDays(10)
-			);
-			student.addBook(book);
+			//
+			student.setStudentIdCard(studentIdCard);
 
-			book = new Book(
-					"Clean code",
-					LocalDateTime.now()
+			//
+			student.addBook(
+					new Book("Spring Data JPA", LocalDateTime.now().minusDays(10))
 			);
-			student.addBook(book);
-
-			book = new Book(
-					"Spring Thymeleaf MVC",
-					LocalDateTime.now().minusYears(1)
+			student.addBook(
+					new Book("Clean code", LocalDateTime.now())
 			);
-			student.addBook(book);
+			student.addBook(
+					new Book("Spring Thymeleaf MVC", LocalDateTime.now().minusYears(1))
+			);
 
-			studentIdCardRepository.save(studentIdCard);
+			//
+			studentRepository.save(student);
+			//studentIdCardRepository.save(studentIdCard);
 
 			// TODO later saving books through repository
 
+			System.out.println();
 
+			// to learn about data fetching
+			// books will not be loaded at first
+			// because the fetching type by many to one
+			// is lazy per default
+			studentRepository
+					.findById(1L)
+					.ifPresent(System.out::println);
 
+			System.out.println();
+
+			// but what we can do this, using the getter
+			// to get the books
+
+			// don't work at this point, because the session close after findById
+//			studentRepository
+//					.findById(1L)
+//					.ifPresent(s -> {
+//						System.out.println("fetch book lazy...");
+//						List<Book> books = s.getBooks();
+//
+//						books.forEach(b -> {
+//							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
+//						});
+//					});
+
+			// first try to keep session open, but don't working
+			new testService().fetchTest(studentRepository);
 
 //			System.out.println();
 //
@@ -101,5 +130,24 @@ public class Application {
 		for (int i = 0; i<20;i++){
 			studentRepository.save(generateStudent(faker));
 		}
+	}
+
+	@Service
+	@Transactional
+	class testService {
+		@Scope("session")
+		public void fetchTest(StudentRepository studentRepository) {
+			studentRepository
+					.findById(1L)
+					.ifPresent(s -> {
+						System.out.println("fetch book lazy...");
+						List<Book> books = s.getBooks();
+
+						books.forEach(b -> {
+							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
+						});
+					});
+		}
+
 	}
 }

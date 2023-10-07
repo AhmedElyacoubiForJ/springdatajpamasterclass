@@ -77,19 +77,21 @@ public class Student {
     // we have specified 2 ways to get entities s. StudentIdCard also
     @OneToOne(
             mappedBy = "student",
-            orphanRemoval = true
             // if we want to delete a student,
             // so the StudentIdCard associated with him must be also deleted.
             // Cause for the foreign key constraints
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
     private StudentIdCard studentIdCard;
 
     @OneToMany(
-            // s. Book property name
+            // s. Book property name (mapping owner)
             mappedBy = "student",
             // means when we delete a student we delete the book association with it
             orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
     )
     private final List<Book> books = new ArrayList<>();
 

@@ -5,12 +5,16 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface StudentRepository extends PagingAndSortingRepository<Student, Long> {// JpaRepository<Student, Long> {
+@Repository
+public interface StudentRepository
+        extends PagingAndSortingRepository<Student, Long> {// JpaRepository<Student, Long> {
+
     // we can define a custom method query (as apart from a predefined queries)
     // for example how to find someone with a given email.
     // The method names follow naming convention
