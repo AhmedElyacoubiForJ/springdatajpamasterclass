@@ -85,9 +85,11 @@ public class Student {
     private StudentIdCard studentIdCard;
 
     @OneToMany(
+            // s. Book property name
             mappedBy = "student",
+            // means when we delete a student we delete the book association with it
             orphanRemoval = true,
-            cascade = CascadeType.ALL
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
     )
     private final List<Book> books = new ArrayList<>();
 
@@ -99,6 +101,20 @@ public class Student {
         this.lastName = lastName;
         this.email = email;
         this.age = age;
+    }
+
+    public void addBook(Book book) {
+        if (!this.books.contains(book)) {
+            this.books.add(book);
+            book.setStudent(this);
+        }
+    }
+
+    public void removeBook(Book book) {
+        if (this.books.contains(book)) {
+            this.books.remove(book);
+            book.setStudent(null);
+        }
     }
 
     @Override

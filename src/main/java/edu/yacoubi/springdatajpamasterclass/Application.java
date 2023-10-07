@@ -1,6 +1,7 @@
 package edu.yacoubi.springdatajpamasterclass;
 
 import com.github.javafaker.Faker;
+import edu.yacoubi.springdatajpamasterclass.model.Book;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentIdCardRepository;
@@ -11,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -29,28 +31,53 @@ public class Application {
 
 		return args -> {
 			Faker faker = new Faker();
-			Student student = generateStudent(faker);;
+			Student student = generateStudent(faker);
+
 			StudentIdCard studentIdCard = new StudentIdCard(
 					"123456789",
 					student
 			);
+
+			Book book = new Book(
+					"Spring Data JPA",
+					LocalDateTime.now().minusDays(10)
+			);
+			student.addBook(book);
+
+			book = new Book(
+					"Clean code",
+					LocalDateTime.now()
+			);
+			student.addBook(book);
+
+			book = new Book(
+					"Spring Thymeleaf MVC",
+					LocalDateTime.now().minusYears(1)
+			);
+			student.addBook(book);
+
 			studentIdCardRepository.save(studentIdCard);
 
-			System.out.println();
+			// TODO later saving books through repository
 
-			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
-			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
 
-			System.out.println();
 
-			System.out.println("studentRepository.findById(1L).ifPresent(System.out::println)");
-			Optional<Student> optionalStudent = studentRepository.findById(1L);
-			optionalStudent.ifPresent(System.out::println);
-			System.out.println(optionalStudent.get().getStudentIdCard());
 
-			System.out.println();
-
-			studentRepository.deleteById(1L);
+//			System.out.println();
+//
+//			System.out.println("studentIdCardRepository.findById(1L).ifPresent(System.out::println)");
+//			studentIdCardRepository.findById(1L).ifPresent(System.out::println);
+//
+//			System.out.println();
+//
+//			System.out.println("studentRepository.findById(1L).ifPresent(System.out::println)");
+//			Optional<Student> optionalStudent = studentRepository.findById(1L);
+//			optionalStudent.ifPresent(System.out::println);
+//			System.out.println(optionalStudent.get().getStudentIdCard());
+//
+//			System.out.println();
+//
+//			studentRepository.deleteById(1L);
 		};
 	}
 

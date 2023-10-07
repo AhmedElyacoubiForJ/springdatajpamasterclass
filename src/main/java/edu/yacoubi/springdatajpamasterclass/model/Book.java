@@ -43,11 +43,19 @@ public class Book {
     )
     private String bookName;
 
+    // many books can belong to one student
+    // That was a unidirectional implementation
+    // depending on the application scenarios
+    // We can also implement a bidirectional relationship
+    // And now lets go a head and do it. s. Student entity
     @ManyToOne
     @JoinColumn(
             name = "student_id",
             nullable = false,
             referencedColumnName = "id",
+            // readability
+            // to rename a generated random name created by spring data framework
+            // so, it's the best practice to have a full control about our application
             foreignKey = @ForeignKey(
                     name = "student_book_fk"
             )
@@ -61,6 +69,13 @@ public class Book {
         this.createdAt = createdAt;
         this.bookName = bookName;
         this.student = student;
+    }
+
+    public Book(
+            String bookName,
+            LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        this.bookName = bookName;
     }
 
     @Override
