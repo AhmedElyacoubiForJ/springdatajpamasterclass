@@ -7,12 +7,14 @@ import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentIdCardRepository;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -91,7 +93,7 @@ public class Application {
 
 			// first try to keep session open, but don't working
 			new testService().fetchTest(studentRepository);
-			
+
 			/*
 			* Caused by: org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: edu.yacoubi.springdatajpamasterclass.model.Student.books, could not initialize proxy - no Session
 	at org.hibernate.collection.internal.AbstractPersistentCollection.throwLazyInitializationException(AbstractPersistentCollection.java:614) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
@@ -126,7 +128,29 @@ public class Application {
 		}
 	}
 
+//	@Service
+//	@EnableTransactionManagement
+//	class testService {
+//		@Transactional
+//		public void fetchTest(StudentRepository studentRepository) {
+//			studentRepository
+//					.findById(1L)
+//					.ifPresent(s -> {
+//						System.out.println("fetch book lazy...");
+//
+//						Hibernate.initialize(s.getBooks());
+//
+//						List<Book> books = s.getBooks();
+//						books.forEach(b -> {
+//							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
+//						});
+//					});
+//		}
+//
+//	}
+
 	@Service
+	@EnableTransactionManagement
 	class testService {
 		@Transactional
 		public void fetchTest(StudentRepository studentRepository) {
@@ -134,13 +158,14 @@ public class Application {
 					.findById(1L)
 					.ifPresent(s -> {
 						System.out.println("fetch book lazy...");
-						List<Book> books = s.getBooks();
 
+						Hibernate.initialize(s.getBooks());
+
+						List<Book> books = s.getBooks();
 						books.forEach(b -> {
 							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
 						});
 					});
 		}
-
 	}
 }
