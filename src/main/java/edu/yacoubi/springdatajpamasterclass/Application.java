@@ -11,6 +11,7 @@ import org.hibernate.Hibernate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -127,27 +128,6 @@ public class Application {
 			studentRepository.save(generateStudent(faker));
 		}
 	}
-
-//	@Service
-//	@EnableTransactionManagement
-//	class testService {
-//		@Transactional
-//		public void fetchTest(StudentRepository studentRepository) {
-//			studentRepository
-//					.findById(1L)
-//					.ifPresent(s -> {
-//						System.out.println("fetch book lazy...");
-//
-//						Hibernate.initialize(s.getBooks());
-//
-//						List<Book> books = s.getBooks();
-//						books.forEach(b -> {
-//							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
-//						});
-//					});
-//		}
-//
-//	}
 
 	@Service
 	@EnableTransactionManagement
