@@ -2,6 +2,7 @@ package edu.yacoubi.springdatajpamasterclass;
 
 import com.github.javafaker.Faker;
 import edu.yacoubi.springdatajpamasterclass.model.Book;
+import edu.yacoubi.springdatajpamasterclass.model.Course;
 import edu.yacoubi.springdatajpamasterclass.model.Student;
 import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentIdCardRepository;
@@ -45,17 +46,10 @@ public class Application {
 
 		return args -> {
 			// Many to Many relationships in Action
-
 			Faker faker = new Faker();
-			Student student = generateStudent(faker);
-
-			StudentIdCard studentIdCard = new StudentIdCard(
-					"123456789",
-					student
-			);
 
 			//
-			student.setStudentIdCard(studentIdCard);
+			Student student = generateStudent(faker);
 
 			//
 			student.addBook(
@@ -69,9 +63,24 @@ public class Application {
 			);
 
 			//
-			studentRepository.save(student);
-			//studentIdCardRepository.save(studentIdCard);
+			StudentIdCard studentIdCard = new StudentIdCard(
+					"123456789",
+					student
+			);
 
+			//
+			student.setStudentIdCard(studentIdCard);
+
+			//
+			student.enrolToCourse(
+					new Course("Computer science", "IT")
+			);
+			student.enrolToCourse(
+					new Course("Spring Data JPA", "Amigos-code internet portal")
+			);
+
+			//
+			studentRepository.save(student);
 		};
 	}
 
