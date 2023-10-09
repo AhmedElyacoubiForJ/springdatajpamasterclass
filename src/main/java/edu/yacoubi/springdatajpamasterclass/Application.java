@@ -44,6 +44,8 @@ public class Application {
 			StudentIdCardRepository studentIdCardRepository) {
 
 		return args -> {
+			// Many to Many relationships in Action
+
 			Faker faker = new Faker();
 			Student student = generateStudent(faker);
 
@@ -70,45 +72,6 @@ public class Application {
 			studentRepository.save(student);
 			//studentIdCardRepository.save(studentIdCard);
 
-			// TODO later saving books through repository
-
-			System.out.println();
-
-			// to learn about data fetching
-			// books will not be loaded at first
-			// because the fetching type by many to one
-			// is lazy per default
-			studentRepository
-					.findById(1L)
-					.ifPresent(System.out::println);
-
-			System.out.println();
-
-			// but what we can do this, using the getter
-			// to get the books
-
-			// don't work at this point, because the session close after findById
-//			studentRepository
-//					.findById(1L)
-//					.ifPresent(s -> {
-//						System.out.println("fetch book lazy...");
-//						List<Book> books = s.getBooks();
-//
-//						books.forEach(b -> {
-//							System.out.println(s.getFirstName() + "borrowed " + b.getBookName());
-//						});
-//					});
-
-			// first try to keep session open, but don't working
-			// new testService().fetchTest(studentRepository);
-			/*
-			* Caused by: org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: edu.yacoubi.springdatajpamasterclass.model.Student.books, could not initialize proxy - no Session
-	at org.hibernate.collection.internal.AbstractPersistentCollection.throwLazyInitializationException(AbstractPersistentCollection.java:614) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
-	at org.hibernate.collection.internal.AbstractPersistentCollection.withTemporarySessionIfNeeded(AbstractPersistentCollection.java:218) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
-	at org.hibernate.collection.internal.AbstractPersistentCollection.initialize(AbstractPersistentCollection.java:591) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
-	at org.hibernate.collection.internal.AbstractPersistentCollection.read(AbstractPersistentCollection.java:149) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
-	at org.hibernate.collection.internal.PersistentBag.iterator(PersistentBag.java:387) ~[hibernate-core-5.6.15.Final.jar:5.6.15.Final]
-			* */
 		};
 	}
 
