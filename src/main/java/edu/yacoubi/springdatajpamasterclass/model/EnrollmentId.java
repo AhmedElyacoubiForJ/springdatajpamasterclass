@@ -6,11 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-// @Embeddable
+// class that represent a composite key
+// in our case it will be the
+// association between student and course
+// respectively enrollment.
+// EnrollmentId will be embedded in Enrollment
 @Embeddable
-@NoArgsConstructor @AllArgsConstructor
-@Data
-public class EnrollmentId implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data // to serve as composite key equals & hashcode is needed
+public class EnrollmentId implements Serializable { // must be serializable
 
     @Column(name = "student_id")
     private Long studentId;

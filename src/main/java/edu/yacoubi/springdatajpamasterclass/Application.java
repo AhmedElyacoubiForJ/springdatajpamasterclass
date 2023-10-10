@@ -71,16 +71,16 @@ public class Application {
 			//
 			student.setStudentIdCard(studentIdCard);
 
-			//
-			student.enrolToCourse(
+			// before composite key
+			/*student.enrolToCourse(
 					new Course("Computer science", "IT")
 			);
 			student.enrolToCourse(
 					new Course("Spring Data JPA", "Amigos-code internet portal")
-			);
+			);*/
 
 			//
-			studentRepository.save(student);
+			//studentRepository.save(student);
 		};
 	}
 

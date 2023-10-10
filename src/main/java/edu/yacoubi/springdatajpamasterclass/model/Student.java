@@ -95,22 +95,31 @@ public class Student {
     )
     private final List<Book> books = new ArrayList<>();
 
-    @ManyToMany(
+//   here we let the framework generate the association table
+//    @ManyToMany(
+//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+//            fetch = FetchType.LAZY // is per default
+//    )
+//    @JoinTable(
+//            name = "enrollment",
+//            joinColumns = @JoinColumn(
+//                    name = "student_id",
+//                    foreignKey = @ForeignKey(name = "enrolment_student_id_fk")
+//            ),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "course_id",
+//                    foreignKey = @ForeignKey(name = "enrolment_course_id_fk")
+//            )
+//    )
+//    private List<Course> courses = new ArrayList<>();
+
+    // now we use the implemented call that represent the association
+
+    @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY // is per default
+            mappedBy = "student"
     )
-    @JoinTable(
-            name = "enrollment",
-            joinColumns = @JoinColumn(
-                    name = "student_id",
-                    foreignKey = @ForeignKey(name = "enrolment_student_id_fk")
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "course_id",
-                    foreignKey = @ForeignKey(name = "enrolment_course_id_fk")
-            )
-    )
-    private List<Course> courses = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Student(String firstName,
                        String lastName,
@@ -136,19 +145,28 @@ public class Student {
         }
     }
 
-    public void enrolToCourse(Course course) {
-        if (!courses.contains(course)) {
-            courses.add(course);
-            course.getStudents().add(this);
+    public void addEnrollment(Enrollment enrollment) {
+        if (!enrollments.contains(enrollment)) {
+            enrollments.add(enrollment);
         }
     }
 
-    public void unEnrolToCourse(Course course) {
-        if (!courses.contains(course)) {
-            courses.remove(course);
-            course.getStudents().remove(this);
-        }
+    public void removeEnrollment(Enrollment enrollment) {
+        enrollments.remove(enrollment);
     }
+//    public void enrolToCourse(Course course) {
+//        if (!courses.contains(course)) {
+//            courses.add(course);
+//            course.getStudents().add(this);
+//        }
+//    }
+//
+//    public void unEnrolToCourse(Course course) {
+//        if (!courses.contains(course)) {
+//            courses.remove(course);
+//            course.getStudents().remove(this);
+//        }
+//    }
 
     @Override
     public String toString() {

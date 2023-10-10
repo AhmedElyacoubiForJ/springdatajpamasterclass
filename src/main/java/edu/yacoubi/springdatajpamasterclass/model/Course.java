@@ -14,7 +14,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity(name = "Course")
 @Table(name = "course")
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Course {
     @Id
     @SequenceGenerator(
@@ -46,14 +47,30 @@ public class Course {
     )
     private String department;
 
-    @ManyToMany(
-            mappedBy = "courses"
+//    @ManyToMany(
+//            mappedBy = "courses"
+//    )
+//    private List<Student> students = new ArrayList<>();
+
+    @OneToMany(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            mappedBy = "course"
     )
-    private List<Student> students = new ArrayList<>();
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Course(String name, String department) {
         this.name = name;
         this.department = department;
+    }
+
+    public void addEnrollment(Enrollment enrollment) {
+        if (!enrollments.contains(enrollment)) {
+            enrollments.add(enrollment);
+        }
+    }
+
+    public void removeEnrollment(Enrollment enrollment) {
+        enrollments.remove(enrollment);
     }
 
     @Override
