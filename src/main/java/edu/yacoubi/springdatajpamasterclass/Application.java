@@ -1,10 +1,7 @@
 package edu.yacoubi.springdatajpamasterclass;
 
 import com.github.javafaker.Faker;
-import edu.yacoubi.springdatajpamasterclass.model.Book;
-import edu.yacoubi.springdatajpamasterclass.model.Course;
-import edu.yacoubi.springdatajpamasterclass.model.Student;
-import edu.yacoubi.springdatajpamasterclass.model.StudentIdCard;
+import edu.yacoubi.springdatajpamasterclass.model.*;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentIdCardRepository;
 import edu.yacoubi.springdatajpamasterclass.repository.StudentRepository;
 import lombok.AllArgsConstructor;
@@ -70,6 +67,25 @@ public class Application {
 
 			//
 			student.setStudentIdCard(studentIdCard);
+
+			//
+			student.addEnrollment(
+					new Enrollment(
+							new EnrollmentId(1L,1L),
+							student,
+							new Course("Computer science", "IT") // id=1
+					)
+			);
+			student.addEnrollment(
+					new Enrollment(
+						new EnrollmentId(1L,2L),
+						student,
+						new Course("Spring Data JPA", "Amigos-code internet portal") // id=2
+					)
+			);
+
+			//
+			studentRepository.save(student);
 
 			// before composite key
 			/*student.enrolToCourse(
