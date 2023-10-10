@@ -73,14 +73,22 @@ public class Application {
 					new Enrollment(
 							new EnrollmentId(1L,1L),
 							student,
-							new Course("Computer science", "IT") // id=1
+							new Course(
+									"Computer science",
+									"IT"
+							), // id = 1
+							LocalDateTime.now()
 					)
 			);
 			student.addEnrollment(
 					new Enrollment(
-						new EnrollmentId(1L,2L),
-						student,
-						new Course("Spring Data JPA", "Amigos-code internet portal") // id=2
+							new EnrollmentId(1L,2L),
+							student,
+							new Course(
+									"Spring Data JPA",
+									"Amigos-code internet portal"
+							), // id = 2
+							LocalDateTime.now().minusDays(24)
 					)
 			);
 

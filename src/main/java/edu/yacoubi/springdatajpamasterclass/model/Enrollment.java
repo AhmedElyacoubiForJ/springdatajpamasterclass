@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 // we don't need that the framework generate for us
 // the ManyToMany @JoinTable specified in student s. property courses
@@ -31,8 +32,19 @@ public class Enrollment {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    public Enrollment(Student student, Course course) {
+    // so we have now a full control of the association table
+    // And we can add some properties, instead of joinTable created by the framework
+    @Column(
+            name = "created_at",
+            nullable = false,
+            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
+
+    )
+    private LocalDateTime createdAt;
+
+    public Enrollment(Student student, Course course, LocalDateTime createdAt) {
         this.student = student;
         this.course = course;
+        this.createdAt = createdAt;
     }
 }
