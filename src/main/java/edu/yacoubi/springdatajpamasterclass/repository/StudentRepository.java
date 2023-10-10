@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Transactional(readOnly = true)
 public interface StudentRepository
         extends PagingAndSortingRepository<Student, Long> {// JpaRepository<Student, Long> {
 
@@ -62,7 +63,7 @@ public interface StudentRepository
             @Param("age") Integer age
     );
 
-    @Transactional // is required otherwise exception will be thrown
+    @Transactional// is required otherwise exception will be thrown
     @Modifying // to tell the framework don't map any think by retrieving data
     @Query("DELETE FROM Student s WHERE s.id = ?1")
     int deleteStudentById(Long id);
